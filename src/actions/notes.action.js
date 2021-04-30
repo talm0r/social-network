@@ -70,9 +70,7 @@ function updateNote(note) {
         notesService.updateNote(note)
         .then(
             response => { 
-                console.log("WTFWTRYRYRAS");
-                console.log("WTFWTRYRYRAS");
-                console.log("WTFWTRYRYRAS");
+               
                 if(response.status === 200) {
                    dispatch(getOutbox());
                    dispatch(getInbox());

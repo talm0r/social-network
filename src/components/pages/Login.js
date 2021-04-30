@@ -110,9 +110,9 @@ export default function Login(props) {
     // validationSchema: LoginSchema,
     onSubmit: (values, { setStatus, setSubmitting }) => {
       enableLoading();
-      // dispatch(userActions.login(values.email, values.password))
+      dispatch(userActions.login(values.email, values.password))
       // dispatch(userActions.signUp(values.email, values.password))
-      dispatch(userActions.signUp(values))
+      // dispatch(userActions.signUp(values))
       disableLoading();
       setSubmitting(false);
 

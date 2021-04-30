@@ -51,7 +51,7 @@ function getOutbox() {
         });
 }
 
-function createNote(values) {
+async function createNote(values) {
     const requestOptions = {
         method: 'POST',
         headers: {
@@ -61,27 +61,45 @@ function createNote(values) {
         },
         body: {
             noteBody: values.noteBody, noteColor: values.note_color, notePriority: values.note_priority, noteSenderId: values.noteSenderId,
-            noteTitle: values.noteTitle, noteUserId: values.note_user_id
+            noteTitle: values.noteTitle, noteUserId: values.noteUserId
         }
 
     };
 
 
     if ((typeof (values.note_image) === "object")) {
-        uploadFilesService.upload(values.note_image[0]).then((response) => {
-            if (response.data.status == 200) {
-                console.log(requestOptions);
-                requestOptions.body.noteIcon = response.data.result.url
-                requestOptions.body = JSON.stringify(requestOptions.body);
-                return fetch(`${data.apiUrl}/notes/add`, requestOptions).then(handleResponse)
-                    .then(response => {
-                        console.log(response);
-                        return response;
-                    });
+        try {
+            const response = await uploadFilesService.upload(values.note_image[0]);
+            const json = await response.json();
+           
+            requestOptions.body.noteIcon  = json.result.url;
+            requestOptions.body = JSON.stringify(requestOptions.body);
+ 
+            return fetch(`${data.apiUrl}/notes/add`, requestOptions).then(handleResponse)
+            .then(response => {
+ 
+                console.log(response);
+                return response;
+            });
+         }
+         catch (error) {
+             console.log(error);
+         }
+        // uploadFilesService.upload(values.note_image[0]).then((response) => {
+        //     if (response.data.status == 200) {
+        //         console.log(requestOptions);
+        //         requestOptions.body.noteIcon = response.data.result.url
+        //         requestOptions.body = JSON.stringify(requestOptions.body);
+        //         return fetch(`${data.apiUrl}/notes/add`, requestOptions).then(handleResponse)
+        //             .then(response => {
+        //                 console.log(response);
+        //                 return response;
+        //             });
 
-            }
-        })
+        //     }
+        // })
     }
+      
     else {
         requestOptions.body = JSON.stringify(requestOptions.body);
         return fetch(`${data.apiUrl}/notes/add`, requestOptions).then(handleResponse)

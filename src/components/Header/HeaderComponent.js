@@ -10,7 +10,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { Drawer, MenuItem } from '@material-ui/core';
 import { useState } from 'react';
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import { FaInbox , FaFacebookMessenger } from 'react-icons/fa';
