@@ -1,8 +1,8 @@
-import { BrowserRouter as Router, Route, Switch, Link, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import HomepageComponent from "./components/Homepage/HomepageComponent";
-import {HeaderComponent} from "./components/Header/HeaderComponent";
-import { AuthPage } from "./components/pages/AuthPage";
-import BasePage from "./BasePage";
+// import {HeaderComponent} from "./components/Header/HeaderComponent";
+// import { AuthPage } from "./components/pages/AuthPage";
+// import BasePage from "./BasePage";
 import Login from "./components/pages/Login";
 import { useSelector  } from 'react-redux'
 export function Routes() {
@@ -35,10 +35,3 @@ export function Routes() {
     )
 }
 
-{/* <Route path="/" exact> */}
-{/*<NotesTableComponent />*/}
-{/* <HomepageComponent /> */}
-{/* </Route> */}
-{/* <Route path="/todos" exact>
-  <TodosComponent />
-</Route> */}

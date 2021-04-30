@@ -1,7 +1,7 @@
-import { notesConstants } from '../constants/note.constants';
+// import { notesConstants } from '../constants/note.constants';
 
-import { alertActions } from '../actions/alert.actions';
-import { history } from '../helpers/history';
+// import { alertActions } from '../actions/alert.actions';
+
 import { notesService } from '../services/notes.service';
 
 
@@ -9,6 +9,7 @@ export const notesActions = {
   
     getInbox,
     updateNote,
+    addNote,
     getOutbox
 };
 
@@ -32,9 +33,9 @@ function getInbox() {
     // dispatch.success(allNotes)
     // dispatch(success(allNotes))
    }
-    function request() { return { type: notesConstants.GETALL_REQUEST } }
-    function success(notes) { return { type: notesConstants.GETALL_SUCCESS, notes } }
-    function failure(error) { return { type: notesConstants.GETALL_FAILURE, error } }
+    // function request() { return { type: notesConstants.GETALL_REQUEST } }
+    // function success(notes) { return { type: notesConstants.GETALL_SUCCESS, notes } }
+    // function failure(error) { return { type: notesConstants.GETALL_FAILURE, error } }
   
 };
 function getOutbox() {
@@ -55,9 +56,9 @@ function getOutbox() {
      // dispatch.success(allNotes)
      // dispatch(success(allNotes))
     }
-     function request() { return { type: notesConstants.GETALL_REQUEST } }
-     function success(notes) { return { type: notesConstants.GETALL_SUCCESS, notes } }
-     function failure(error) { return { type: notesConstants.GETALL_FAILURE, error } }
+    //  function request() { return { type: notesConstants.GETALL_REQUEST } }
+    //  function success(notes) { return { type: notesConstants.GETALL_SUCCESS, notes } }
+    //  function failure(error) { return { type: notesConstants.GETALL_FAILURE, error } }
    
  };
 
@@ -65,27 +66,34 @@ function getOutbox() {
 function updateNote(note) {
     return dispatch => {
         console.log(note);
-        notesService.updateNote(note);
-        dispatch({type:"READNOTE",payload: note});
+        // return;
+        notesService.updateNote(note)
+        .then(
+            response => { 
+                console.log("WTFWTRYRYRAS");
+                console.log("WTFWTRYRYRAS");
+                console.log("WTFWTRYRYRAS");
+                if(response.status === 200) {
+                   dispatch(getOutbox());
+                   dispatch(getInbox());
+                }
+            })
+       
     }
        
 }
-    // return dispatch => {
-    //     debugger;
-    //     // dispatch(request());
-    //     dispatch.success(allNotes)
-    //     console.log("DISPATECHEDDTSDSD");
-    //     // notesService.getAll(1,2)
-    //     //     .then(
-    //     //         response => {
-    //     //              debugger 
-    //     //             dispatch(success(response.result))
-    //     //         },
-    //     //         error => { 
-    //     //             dispatch(failure(error));
-    //     //             dispatch(alertActions.error(error))
-    //     //         }
-    //     //     );
-    // };
-
+ function  addNote(note) {
+    return dispatch => {
+        console.log(note);
+       notesService.createNote(note)
+        .then(response => { 
+            
+                if(response.status === 200) {
+                   dispatch(getOutbox());
+                   dispatch(getInbox());
+                }
+            })
+    }
+}
+   
   

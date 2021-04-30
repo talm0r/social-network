@@ -33,7 +33,9 @@ function NotesTableComponent() {
         
         return state.notes.outbox;
     } ) 
+  
     const newArray = notes?.slice().reverse();
+    console.log("New Array - " +newArray);
     const user =  useSelector( (state) => {
     
         return state.auth.user;
@@ -117,7 +119,7 @@ function NotesTableComponent() {
                                             <span className="text-dark-75">Title</span>
                                         </th>
                                         <th className="text-center" >Sender Name</th>
-                                        <th className="text-center">Sent</th>
+                                        <th className="text-center">Received</th>
                                         <th className="text-center">Priority</th>
                                         <th className="text-center">Read</th>
                                     </tr>
@@ -126,7 +128,7 @@ function NotesTableComponent() {
                                 {
                                 newArray?.map(function (singleNote, index) {
                                     return (
-                                        <NoteItemComponent key={singleNote.noteId} singleNote={singleNote}/>
+                                        <NoteItemComponent key={singleNote.noteId} singleNote={singleNote} inbox={true}/>
                                     )
                                 })
                                 }

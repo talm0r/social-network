@@ -11,10 +11,12 @@ import { Drawer, MenuItem } from '@material-ui/core';
 import { useState } from 'react';
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import PermIdentityIcon from '@material-ui/icons/PermIdentity';
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
+
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
+import { FaInbox , FaFacebookMessenger } from 'react-icons/fa';
+import { BsFillPersonFill } from "react-icons/bs";
+
+import { MdSecurity } from "react-icons/md";
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -32,12 +34,8 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 function HeaderComponent() {
-    const dispatch = useDispatch();
 
-    const notes = useSelector((state) => {
-
-        return state.notes.notes;
-    })
+   
     const user = useSelector((state) => {
 
         return state.auth.user;
@@ -65,10 +63,10 @@ function HeaderComponent() {
                 </Toolbar>
             </AppBar>
             <Drawer  open={menu} onClose={handleToggle}>
-                <MenuItem className="mb-3 ml-5 mt-5"><Link to="/inbox" ><InboxIcon />Inbox </Link></MenuItem>
-                <MenuItem className="mb-3 ml-5 mt-5"><Link to="/outbox" ><InboxIcon />Outbox </Link></MenuItem>
-                <MenuItem className="mb-3 ml-5 ">  <Link to="/edit" ><PermIdentityIcon/>Personal Information </Link></MenuItem>
-                <MenuItem className="mb-3 ml-5 ">  <Link to="/changepassword" > <VpnKeyIcon/>Change Password </Link></MenuItem>
+                <MenuItem className="mb-3 ml-5 mt-5"><Link to="/inbox" ><FaFacebookMessenger />Inbox </Link></MenuItem>
+                <MenuItem className="mb-3 ml-5 mt-5"><Link to="/outbox" ><FaInbox />Outbox </Link></MenuItem>
+                <MenuItem className="mb-3 ml-5 ">  <Link to="/edit" ><BsFillPersonFill/>Personal Information </Link></MenuItem>
+                <MenuItem className="mb-3 ml-5 ">  <Link to="/changepassword" > <MdSecurity/>Change Password </Link></MenuItem>
                 <MenuItem className="mb-3 ml-5 ">  <Link to="/logout" > <MeetingRoomIcon />Logout </Link></MenuItem>
 
             </Drawer>

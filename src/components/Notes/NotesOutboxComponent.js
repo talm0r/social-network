@@ -85,7 +85,7 @@ function NotesOutboxComponent() {
                                 {
                                 newArray?.map(function (singleNote, index) {
                                     return (
-                                        <NoteItemComponent key={singleNote.noteId} singleNote={singleNote}/>
+                                        <NoteItemComponent key={singleNote.noteId} singleNote={singleNote} inbox={false}/>
                                     )
                                 })
                                 }

@@ -1,8 +1,10 @@
 import data from '../data/data';
 import { authHeader } from '../helpers/auth-header';
 import { history } from '../helpers/history';
+import { requestHeaders } from '../constants/requestHeaders.constants';
 export const userService = {
     login,
+    signUp,
     logout,
     getAll
 };
@@ -24,6 +26,10 @@ function login(email, password) {
         });
 }
 
+function signUp(values) {
+  const requestOptions =  createRequestOptions("POST", requestHeaders.CONTENT_JSON ,values)
+  console.log(requestOptions);
+}
 function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('user');
@@ -58,4 +64,14 @@ function handleResponse(response) {
 
         return data;
     });
+}
+
+function createRequestOptions(method,headers,body) {
+    const requestOptions = {
+        method: method,
+        headers: headers,
+        body: JSON.stringify(body)
+    };
+
+    return requestOptions;
 }

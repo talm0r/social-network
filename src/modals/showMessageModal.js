@@ -92,7 +92,7 @@ function ShowMessageModal({ note }) {
               </div>
              
               <div className="text-center">
-              <img src={note.noteIcon} className="max-w-50  " alt="" />
+              <img src={note.noteIcon} className="max-w-100px  " alt="" />
               </div>
             </div>
           </div>

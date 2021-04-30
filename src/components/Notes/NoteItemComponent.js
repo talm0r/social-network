@@ -2,7 +2,8 @@ import ShowMessageModal from "../../modals/showMessageModal";
 import React from 'react';
 import Moment from "react-moment";
 import StarsComponent from "../Helpers/StarsComponent";
-function NoteItemComponent({ singleNote}) {
+import CreateMessageModal from "../../modals/CreateMessageModal";
+function NoteItemComponent({ singleNote, inbox}) {
 
  
 
@@ -14,17 +15,21 @@ function NoteItemComponent({ singleNote}) {
                 <div className="d-flex align-items-center">
                     <div className="symbol symbol-50 symbol-light mr-4 ">
                     <span className="symbol-label rounded-image">
-                        <img src={singleNote.userImage} className="h-75 " alt="" />
+                        <img src={inbox ? (singleNote.userImage ? singleNote.userImage :"https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png" ) : (singleNote.getterUserImage ? singleNote.getterUserImage : "https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png" )} className="h-75 " alt="" />
                     </span>
                     </div>
                     <div>
-                        <span  className="cursor-pointer text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg"><ShowMessageModal note={singleNote} /></span>
+                        <span  className="cursor-pointer text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">
+                           {inbox ? <ShowMessageModal note={singleNote} /> :  <div> <CreateMessageModal note={singleNote}/></div>} 
+                       
+                            </span>
                         {/* <span className="text-muted font-weight-bold d-block">HTML, JS, ReactJS</span> */}
                     </div>
                 </div>
             </td>
-            <td>
-                {singleNote.userFirstName + " " + singleNote.userLastName}
+            <td> 
+                {inbox ? (singleNote.userFirstName + " " + singleNote.userLastName) : (singleNote.getterFirstName + " " + singleNote.getterLastName)}
+                {/* {singleNote.userFirstName + " " + singleNote.userLastName} */}
             </td>
             <td>
                 <span className="text-dark-75 font-weight-bolder d-block font-size-lg">

@@ -32,39 +32,32 @@ function Copyright() {
   );
 }
 
-const useStyles = makeStyles((theme) => ({
-
+const useStyles = makeStyles(() => (
+  
+  {
+  
   root: {
     height: '100vh',
   },
   image: {
     backgroundImage: 'url(https://source.unsplash.com/random)',
     backgroundRepeat: 'no-repeat',
-    backgroundColor:
-      theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   },
   paper: {
-    margin: theme.spacing(8, 4),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
   },
   avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    width: '100%',
   },
   loginBut: {
     fontSize: 16,
     cursor: 'pointer'
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
   },
 }));
 
@@ -75,9 +68,9 @@ const initialValues = {
   lastName: ""
 }
 export default function Login(props) {
-  const history = useHistory();
-  const URL = "http://localhost:8080/"
-  const { intl } = props;
+  // const history = useHistory();
+  // const URL = "http://localhost:8080/"
+  // const { intl } = props;
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
   const [signInOrSignUp, setSignInOrSignUp] = useState(false);
@@ -117,46 +110,9 @@ export default function Login(props) {
     // validationSchema: LoginSchema,
     onSubmit: (values, { setStatus, setSubmitting }) => {
       enableLoading();
-      dispatch(userActions.login(values.email, values.password))
-      // const requestOptions = {
-      //   method: 'POST',
-      //   headers: {
-      //     'Accept': 'application/json',
-      //     'Content-Type': 'application/json',
-      //     'Cache': 'no-cache'
-      //   },
-   
-
-      //   // body: JSON.stringify({ userEmail: values.email, userPassword: values.password })
-      // };
-      // let loginOrRegister = '';
-      // if (!signInOrSignUp) {
-      //   requestOptions.body = JSON.stringify({ userEmail: values.email, userPassword: values.password })
-      //   loginOrRegister = "user/login";
-      // }
-      // else {
-      //   requestOptions.body = JSON.stringify({ userEmail: values.email, userPassword: values.password, userFirstName: values.firstName, userLastName: values.lastName })
-      //   loginOrRegister = "user/signup";
-      // }
-      // fetch(URL + loginOrRegister, requestOptions)
-      //   .then(res => res.json())
-      //   .then(data => {
-      //     if (data.status != 200) {
-      //       setErrorMessage(data.message)
-      //       setTimeout(() => {
-      //         setErrorMessage('')
-      //       }, 2500);
-      //     }
-      //     else if (data.status == 200) {
-      //       dispatch({ type: 'SIGNIN', payload: data.result });
-      //       fetch(URL + "/notes/getUserNotes")
-      //         .then(res => res.json())
-      //         .then(data => {
-      //           console.log(data);
-      //         })
-      //       // history.push('/homepage');
-      //     }
-      //   });
+      // dispatch(userActions.login(values.email, values.password))
+      // dispatch(userActions.signUp(values.email, values.password))
+      dispatch(userActions.signUp(values))
       disableLoading();
       setSubmitting(false);
 
@@ -171,11 +127,10 @@ export default function Login(props) {
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
+          {signInOrSignUp ? (null) : ( <LockOutlinedIcon />)}
           </Avatar>
           <Typography component="h1" variant="h5">
             {signInOrSignUp ? ("Sign up") : ("Sign in")}
-
           </Typography>
           <form
             onSubmit={formik.handleSubmit}
@@ -221,8 +176,6 @@ export default function Login(props) {
                 </div>
               </>
             ) : null}
-
-
             <div className="form-group fv-plugins-icon-container">
               <input
                 placeholder="Email"
@@ -252,7 +205,7 @@ export default function Login(props) {
                 </div>
               ) : null}
             </div>
-            <div className="">
+            <div>
               {!false ? (
                 <div className="fv-plugins-message-container">
                   <div className="fv-help-block">{errorMessage}</div>

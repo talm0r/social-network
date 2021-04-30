@@ -25,8 +25,9 @@ export default function notesReducer(state = [], action) {
         case "GETALLINBOX":
             return {
                 ...state, 
-                notes: action.payload
+                notes:  action.payload
             };
+      
         case "GETALLOUTBOX":
             return {
                 ...state,
@@ -51,11 +52,13 @@ export default function notesReducer(state = [], action) {
                return item;
             })
         }
-        // case "READNOTE":
-        //     return {
-        //         ...state,
-        //         notes: action.payload
-        //     };
+        case "ADDEDNOTE":
+         
+            return {
+                ...state, 
+                notes: [...state.notes, action.payload]
+            };
+      
         case notesConstants.GETALL_FAILURE:
             return {
                 error: action.error

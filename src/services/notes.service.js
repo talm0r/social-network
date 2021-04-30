@@ -60,25 +60,14 @@ function createNote(values) {
             'Cache': 'no-cache'
         },
         body: {
-            noteBody: values.note_body, noteColor: values.note_color, notePriority: values.note_priority, noteSenderId: values.note_sender_id,
-            noteTitle: values.note_title, noteUserId: values.note_user_id}
-        
+            noteBody: values.noteBody, noteColor: values.note_color, notePriority: values.note_priority, noteSenderId: values.noteSenderId,
+            noteTitle: values.noteTitle, noteUserId: values.note_user_id
+        }
+
     };
-    // private int noteSenderId;
-    // private int noteUserId;
-    // private String noteTitle;
-    // private String noteBody;
-    // private String noteColor;
-    // private String noteIcon;
-    // private int notePriority;
-    //     note_body: ""
-    // note_color: ""
-    // note_image: ""
-    // note_priority: "1"
-    // note_sender_id: 1
-    // note_title: ""
-    // note_user_id: undefined
-    if (values.note_image != "") {
+
+
+    if ((typeof (values.note_image) === "object")) {
         uploadFilesService.upload(values.note_image[0]).then((response) => {
             if (response.data.status == 200) {
                 console.log(requestOptions);
@@ -89,7 +78,7 @@ function createNote(values) {
                         console.log(response);
                         return response;
                     });
-               
+
             }
         })
     }
@@ -103,8 +92,7 @@ function createNote(values) {
     }
 
 }
-function updateNote(note) {
-    // debugger;
+async function updateNote(note) {
     const requestOptions = {
         method: 'PUT',
         headers: {
@@ -112,23 +100,40 @@ function updateNote(note) {
             'Content-Type': 'application/json',
             'Cache': 'no-cache'
         },
-        body: JSON.stringify({
-            noteId: note.noteId, noteColor: note.noteColor, notePriority: note.notePriority, 
-            noteTitle: note.noteTitle, noteRead: true})
-        
+        body: {
+            noteId: note.noteId, noteColor: note.note_color, notePriority: note.note_priority,
+            noteTitle: note.noteTitle, noteRead: true
+        }
+
     };
-    // private int noteId;
-    // private Boolean noteRead;
-    // private String noteTitle;
-    // private String noteBody;
-    // private String noteColor;
-    // private String noteIcon;
-    // private int notePriority;
-    return fetch(`${data.apiUrl}/notes/update`, requestOptions).then(handleResponse)
+    if ((typeof (note.note_image) === "object")) {
+        try {
+           const response = await uploadFilesService.upload(note.note_image[0]);
+           const json = await response.json();
+           console.log(json);
+           requestOptions.body.noteIcon  = json.result.url;
+           requestOptions.body = JSON.stringify(requestOptions.body);
+
+           return fetch(`${data.apiUrl}/notes/update`, requestOptions).then(handleResponse)
+           .then(response => {
+
+               console.log(response);
+               return response;
+           });
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+    else {
+        requestOptions.body = JSON.stringify(requestOptions.body);
+        return fetch(`${data.apiUrl}/notes/update`, requestOptions).then(handleResponse)
             .then(response => {
+                // debugger;
                 console.log(response);
                 return response;
             });
+    }
 }
 
 function handleResponse(response) {
@@ -147,4 +152,15 @@ function handleResponse(response) {
 
         return data;
     });
+}
+ function uploadImage(image) {
+    uploadFilesService.upload(image).then((response) => {
+        if (response.data.status == 200) {
+
+            return response.data.result.url;
+
+
+
+        }
+    })
 }
