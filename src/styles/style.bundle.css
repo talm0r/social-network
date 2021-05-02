@@ -63685,7 +63685,7 @@ code {
   justify-content: center;
   font-weight: 500;
   color: #3F4254;
-  background-color: #F3F6F9;
+  /* background-color: #F3F6F9; */
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -63760,8 +63760,8 @@ code {
   color: #F64E60;
 }
 .symbol.symbol-light .symbol-label {
-  background-color: #F3F6F9;
-  color: #7E8299;
+  /* background-color: #F3F6F9; */
+  /* color: #7E8299; */
 }
 .symbol.symbol-light-light .symbol-label {
   background-color: #F3F6F9;

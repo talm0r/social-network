@@ -7,11 +7,29 @@ export const notesService = {
     getInbox,
     createNote,
     updateNote,
+    setReadFlag,
     getOutbox
 
 };
 
+function setReadFlag(noteId,status) {
+    const requestOptions = {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Cache': 'no-cache'
+        },
+        body:JSON.stringify( {
+            noteId: noteId, noteRead: status
+        })
 
+    };
+    return fetch(`${data.apiUrl}/notes/readNote`, requestOptions).then(handleResponse)
+    .then(response => {
+        return response;
+    });
+}
 
 
 function getInbox() {
@@ -77,7 +95,6 @@ async function createNote(values) {
  
             return fetch(`${data.apiUrl}/notes/add`, requestOptions).then(handleResponse)
             .then(response => {
- 
                 console.log(response);
                 return response;
             });
@@ -120,7 +137,7 @@ async function updateNote(note) {
         },
         body: {
             noteId: note.noteId, noteColor: note.note_color, notePriority: note.note_priority,
-            noteTitle: note.noteTitle, noteRead: true
+            noteTitle: note.noteTitle,noteBody: note.noteBody, noteRead: true
         }
 
     };

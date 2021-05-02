@@ -1,41 +1,13 @@
-import { Button, Modal } from "react-bootstrap";
-import { useState, useEffect, useMemo } from "react";
 import React from 'react';
-import ShowMessageModal from "../../modals/showMessageModal";
 
-import Moment from "react-moment";
-import ReactStars from "react-rating-stars-component";
-import StarsComponent from "../Helpers/StarsComponent";
-import users from "../../data/users";
-
-import CreateMessageModal from "../../modals/CreateMessageModal";
-import { useSelector, useDispatch } from 'react-redux'
-import store from "../../store/store";
-import { userActions } from '../../actions/user.action';
-import { notesService } from "../../services/notes.service";
-import { authentication } from "../../reducers/authentication.reducer";
-import { notesActions } from "../../actions/notes.action";
-import { notesConstants } from "../../constants/note.constants";
-import ImageUploaderComponent from "../Helpers/ImageUploaderComponent";
-import { TextField } from "@material-ui/core";
-import Select from 'react-select'
-import countryList from 'react-select-country-list'
 function ChangePasswordComponent() {
     const [values, setValues] = React.useState({
         userPassword: '',
         userNewPassword: '',
         userConfirmNewPassword: '',
-        
-
     });
     const handleChange = name => event => {
-      
-        
         setValues({ ...values, [name]: event.target.value });
-  
-
-   console.log(values);
-    
 };
 return (
     <div className="flex-row-fluid ml-lg-8">

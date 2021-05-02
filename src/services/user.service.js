@@ -6,30 +6,40 @@ export const userService = {
     login,
     signUp,
     logout,
-    getAll
+    getAll,
+    editUser
 };
 
-function login(email, password) {
+function login(loginDto) {
     
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({  userEmail: email, userPassword:password  })
-    };
-
+    const requestOptions = createRequestOptions("POST", requestHeaders.CONTENT_JSON, loginDto)
     return fetch(`${data.apiUrl}/user/login`, requestOptions)
         .then(handleResponse)
         .then(response => {
-            //  store user details and jwt token in local storage to keep user logged in between page refreshes
-                 localStorage.setItem('user', JSON.stringify(response.result));
+            localStorage.setItem('user', JSON.stringify(response.result));
             return response;
         });
 }
 
-function signUp(values) {
-  const requestOptions =  createRequestOptions("POST", requestHeaders.CONTENT_JSON ,values)
-  console.log(requestOptions);
+function signUp(signUpDto) {
+    const requestOptions = createRequestOptions("POST", requestHeaders.CONTENT_JSON, signUpDto)
+    return fetch(`${data.apiUrl}/user/signup`, requestOptions)
+        .then(handleResponse)
+        .then(response => {
+            localStorage.setItem('user', JSON.stringify(response.result));
+            return response;
+        });
 }
+function editUser(user) {
+    const requestOptions = createRequestOptions("PUT", requestHeaders.CONTENT_JSON, user)
+    return fetch(`${data.apiUrl}/user/update`, requestOptions)
+    .then(handleResponse)
+    .then(response => {
+      console.log(response);
+        return response;
+    });
+}
+
 function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('user');
@@ -41,9 +51,7 @@ function getAll() {
         method: 'GET',
         headers: authHeader()
     };
-
-    return fetch(`${data.apiUrl}/user/getAllUsers`, requestOptions).then(handleResponse) .then(response => {
-     
+    return fetch(`${data.apiUrl}/user/getAllUsers`, requestOptions).then(handleResponse).then(response => {
         return response;
     });
 }
@@ -66,7 +74,7 @@ function handleResponse(response) {
     });
 }
 
-function createRequestOptions(method,headers,body) {
+function createRequestOptions(method, headers, body) {
     const requestOptions = {
         method: method,
         headers: headers,

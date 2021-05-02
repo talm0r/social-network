@@ -36,7 +36,6 @@ function ProfileComponent ()  {
     
     //     });
     // }
-  console.log(user);
     
   return (
     <div className="flex-row-auto offcanvas-mobile " id="kt_profile_aside">

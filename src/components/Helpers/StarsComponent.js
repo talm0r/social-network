@@ -1,6 +1,7 @@
 import ReactStars from "react-rating-stars-component";
 import React from "react";
 function StarsComponent({ priority, isEditAble , parentCallback}) {
+
 const ratingChanged = (newRating) => {
   parentCallback('note_priority',newRating)
   };

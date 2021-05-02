@@ -83,39 +83,20 @@ function CreateMessageModal({ note }) {
     });
    
     const handleChange = name => event => {
-       
         setValues({ ...values, [name]: event.target.value });
-        console.log(values);
-        
     };
    
     const handleSubmit = () => {
         setLoading(true);
-        
-        
-        
         if(note != undefined) {
             values.noteId = note.noteId
             dispatch(notesActions.updateNote(values))
-            
             setLoading(false);
             setShow(false);
             return;
         }
-        // onSubmit: (values, { setStatus, setSubmitting }) => {
-        //     enableLoading();
-        //     dispatch(userActions.login(values.email, values.password))
-        //     disableLoading();
-        //     setSubmitting(false);
-      
-      
-        //   },
-        // setLoading(true);
-        // debugger;
-       
         values.noteUserId = userToMessage?.userId;
         values.noteSenderId = user?.userId;
-       
         dispatch(notesActions.addNote(values))
         setTimeout(() => {
             setLoading(false);
@@ -133,14 +114,8 @@ function CreateMessageModal({ note }) {
             }
      
         }
-        console.log(values);
-    
         return;
-
     }
-
-
-
     return (
         <>
             <span onClick={handleShow}>
@@ -150,7 +125,7 @@ function CreateMessageModal({ note }) {
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header style={{ backgroundColor: headerColor }} closeButton>
-                    <Modal.Title>{note ? "Edit Message" : "Send Message"} {userToMessage ? (<span> To {userToMessage.userFirstName} {userToMessage.userLastName}</span>) : null}</Modal.Title>
+                    <Modal.Title>{note ? <span> Edit Message sent to {(note.getterFirstName || '') +" " + (note.getterLastName || '' )}  </span>: "Send Message"} {userToMessage ? (<span> To {userToMessage.userFirstName} {userToMessage.userLastName}</span>) : null}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {/* <IconsComponent /> */}
@@ -164,9 +139,6 @@ function CreateMessageModal({ note }) {
                                     </div>
                                     ) 
                                     : ''
-                                //     <div className="w-100 mb-5" >
-                                //     <h4>Editting message sent to {note?.userFirstName + " " + note?.userLastName}</h4>
-                                // </div>
                                 }
                             {note ? null :  
                              <ReactSearchAutocomplete

@@ -31,7 +31,7 @@ function Copyright() {
     </Typography>
   );
 }
-
+const md5 = require('md5');
 const useStyles = makeStyles(() => (
   
   {
@@ -62,10 +62,10 @@ const useStyles = makeStyles(() => (
 }));
 
 const initialValues = {
-  email: "",
-  password: "",
-  firstName: "",
-  lastName: ""
+  userEmail: "",
+  userPassword: "",
+  userFirstName: "",
+  userLastName: ""
 }
 export default function Login(props) {
   // const history = useHistory();
@@ -80,20 +80,20 @@ export default function Login(props) {
     setSignInOrSignUp(!signInOrSignUp);
   }
   const LoginSchema = Yup.object().shape({
-    email: Yup.string()
+    userEmail: Yup.string()
       .email("Wrong email format")
       .min(3, "Minimum 3 symbols")
       .max(50, "Maximum 50 symbols")
       .required(),
-    password: Yup.string()
+      userPassword: Yup.string()
       .min(3, "Minimum 3 symbols")
       .max(50, "Maximum 50 symbols")
       .required(),
-    firstName: Yup.string()
+      userFirstName: Yup.string()
       .min(2, "Minimum 2 letters for first name")
       .max(30, "Maximum 30 letters for first name")
       .required(),
-    lastName: Yup.string()
+      userLastName: Yup.string()
       .min(2, "Minimum 2 letters for last name")
       .max(30, "Maximum 30 letters for last name")
       .required()
@@ -109,10 +109,10 @@ export default function Login(props) {
     initialValues,
     // validationSchema: LoginSchema,
     onSubmit: (values, { setStatus, setSubmitting }) => {
-      enableLoading();
-      dispatch(userActions.login(values.email, values.password))
-      // dispatch(userActions.signUp(values.email, values.password))
-      // dispatch(userActions.signUp(values))
+     
+      values.userPassword = md5(values.userPassword);
+      if(signInOrSignUp) dispatch(userActions.signUp(values));
+      else dispatch(userActions.login(values));
       disableLoading();
       setSubmitting(false);
 
@@ -150,12 +150,12 @@ export default function Login(props) {
                     type="text"
                     className={`form-control form-control-solid h-auto py-5 px-6 
             `}
-                    name="firstName"
-                    {...formik.getFieldProps("firstName")}
+                    name="userFirstName"
+                    {...formik.getFieldProps("userFirstName")}
                   />
-                  {formik.touched.firstName && formik.errors.firstName ? (
+                  {formik.touched.userFirstName && formik.errors.userFirstName ? (
                     <div className="fv-plugins-message-container">
-                      <div className="fv-help-block">{formik.errors.firstName}</div>
+                      <div className="fv-help-block">{formik.errors.userFirstName}</div>
                     </div>
                   ) : null}
                 </div>
@@ -165,12 +165,12 @@ export default function Login(props) {
                     type="text"
                     className={`form-control form-control-solid h-auto py-5 px-6 
            `}
-                    name="lastName"
-                    {...formik.getFieldProps("lastName")}
+                    name="userLastName"
+                    {...formik.getFieldProps("userLastName")}
                   />
-                  {formik.touched.lastName && formik.errors.lastName ? (
+                  {formik.touched.userLastName && formik.errors.userLastName ? (
                     <div className="fv-plugins-message-container">
-                      <div className="fv-help-block">{formik.errors.lastName}</div>
+                      <div className="fv-help-block">{formik.errors.userLastName}</div>
                     </div>
                   ) : null}
                 </div>
@@ -182,12 +182,12 @@ export default function Login(props) {
                 type="email"
                 className={`form-control form-control-solid h-auto py-5 px-6 
             `}
-                name="email"
-                {...formik.getFieldProps("email")}
+                name="userEmail"
+                {...formik.getFieldProps("userEmail")}
               />
-              {formik.touched.email && formik.errors.email ? (
+              {formik.touched.userEmail && formik.errors.userEmail ? (
                 <div className="fv-plugins-message-container">
-                  <div className="fv-help-block">{formik.errors.email}</div>
+                  <div className="fv-help-block">{formik.errors.userEmail}</div>
                 </div>
               ) : null}
             </div>
@@ -195,13 +195,14 @@ export default function Login(props) {
               <input
                 placeholder="Password"
                 type="password"
+               autoComplete="new-password"
                 className={`form-control form-control-solid h-auto py-5 px-6`}
-                name="password"
-                {...formik.getFieldProps("password")}
+                name="userPassword"
+                {...formik.getFieldProps("userPassword")}
               />
-              {formik.touched.password && formik.errors.password ? (
+              {formik.touched.userPassword && formik.errors.userPassword ? (
                 <div className="fv-plugins-message-container">
-                  <div className="fv-help-block">{formik.errors.password}</div>
+                  <div className="fv-help-block">{formik.errors.userPassword}</div>
                 </div>
               ) : null}
             </div>

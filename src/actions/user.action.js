@@ -8,10 +8,16 @@ export const userActions = {
     login,
     logout,
     getAll,
-    signUp
+    signUp,
+    edit
 };
-
+// getOutbox,
+// getInbox,
+// setReadFlag,
+// updateNote,
+// addNote,
 function login(username, password) {
+   
     return dispatch => {
       
         dispatch(request({ username }));
@@ -49,34 +55,14 @@ function login(username, password) {
 
 function signUp(values) {
     return dispatch => {
-      
        userService.signUp(values);
-
-        // return;
-        // userService.login()
-        //     .then(
-        //         response => { 
-        //             if(response.status == 200) {
-        //                let user = response.result;
-                      
-        //             //    dispatch(notesActions.getInbox());
-        //             //    dispatch(notesActions.getOutbox());
-        //                dispatch(getAll());
-        //                 // dispatch(success(user));
-                       
-        //             }
-        //             else {
-        //                 console.log(response.message);
-        //                 // dispatch(failure(response.message));
-        //                 // dispatch(alertActions.error(response.message));
-        //             }
-        //         },
-        //         error => {
-        //             console.log("Error");
-        //             // dispatch(failure(error));
-        //             // dispatch(alertActions.error(error));
-        //         }
-        //     );
+    };
+}
+function edit(user) {
+    // console.log(user);
+    return dispatch => {
+       userService.editUser(user);
+       dispatch({type:"UPDATEUSER",payload: user})
     };
 }
 

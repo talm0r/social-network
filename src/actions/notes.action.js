@@ -7,10 +7,12 @@ import { notesService } from '../services/notes.service';
 
 export const notesActions = {
   
+    getOutbox,
     getInbox,
+    setReadFlag,
     updateNote,
     addNote,
-    getOutbox
+    
 };
 
 
@@ -24,9 +26,6 @@ function getInbox() {
               
                 let tempNotes = response.result;
                dispatch({type:"GETALLINBOX",payload: tempNotes});
-             
-               console.log(response.result);
-               
                 },
                 
             );
@@ -39,19 +38,12 @@ function getInbox() {
   
 };
 function getOutbox() {
-  
     return dispatch => {
-      
       notesService.getOutbox().then(
                  response => { 
-               
                  let tempNotes = response.result;
                 dispatch({type:"GETALLOUTBOX",payload: tempNotes});
-              
-                console.log(response.result);
-                
                  },
-                 
              );
      // dispatch.success(allNotes)
      // dispatch(success(allNotes))
@@ -65,7 +57,6 @@ function getOutbox() {
 
 function updateNote(note) {
     return dispatch => {
-        console.log(note);
         // return;
         notesService.updateNote(note)
         .then(
@@ -91,6 +82,22 @@ function updateNote(note) {
                    dispatch(getInbox());
                 }
             })
+    }
+}
+
+function setReadFlag(noteId, status) {
+   
+    return dispatch => {
+        notesService.setReadFlag(noteId,status)
+        .then(
+            response => { 
+               
+                if(response.status === 200) {
+                   dispatch(getOutbox());
+                   dispatch(getInbox());
+                }
+            })
+       
     }
 }
    

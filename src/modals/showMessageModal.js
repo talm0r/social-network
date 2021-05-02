@@ -17,10 +17,12 @@ function ShowMessageModal({ note }) {
   const handleClose = () => setShow(false);
   const handleShow = () => { 
     setShow(true) 
-    // console.log(note);
-   dispatch(notesActions.updateNote(note));
-   
+   dispatch(notesActions.setReadFlag(note.noteId, true));
   };
+  const setUnread = () => {
+    dispatch(notesActions.setReadFlag(note.noteId, false));
+    setShow(false);
+  }
   const placeHolder = note.noteTitle
 
   
@@ -99,7 +101,7 @@ function ShowMessageModal({ note }) {
 
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={setUnread}>
             Mark as unread
             </Button>
           <Button variant="primary" onClick={handleClose}>
