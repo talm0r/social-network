@@ -3,7 +3,7 @@ import ImageUploader from "react-images-upload";
 
 function ImageUploaderComponent ({parentCallback})  {
   const onDrop = picture => {
-    parentCallback('note_image',picture);
+    parentCallback('image',picture);
   };
   
   return (

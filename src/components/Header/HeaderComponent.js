@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Avatar from '@material-ui/core/Avatar';
@@ -11,7 +10,6 @@ import { Drawer, MenuItem } from '@material-ui/core';
 import { useState } from 'react';
 import { Link } from "react-router-dom";
 import { useSelector } from 'react-redux'
-
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import { FaInbox , FaFacebookMessenger } from 'react-icons/fa';
 import { BsFillPersonFill } from "react-icons/bs";
@@ -34,8 +32,6 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 function HeaderComponent() {
-
-   
     const user = useSelector((state) => {
 
         return state.auth.user;
@@ -45,9 +41,6 @@ function HeaderComponent() {
     function handleToggle() {
         setMenu(!menu);
     }
-
-
-   
     const classes = useStyles();
     return (
         <div>
@@ -64,14 +57,12 @@ function HeaderComponent() {
             </AppBar>
             <Drawer  open={menu} onClose={handleToggle}>
                 <MenuItem className="mb-3 ml-5 mt-5"><Link to="/inbox" ><FaFacebookMessenger />Inbox </Link></MenuItem>
-                <MenuItem className="mb-3 ml-5 mt-5"><Link to="/outbox" ><FaInbox />Outbox </Link></MenuItem>
+                <MenuItem className="mb-3 ml-5 "><Link to="/outbox" ><FaInbox />Outbox </Link></MenuItem>
                 <MenuItem className="mb-3 ml-5 ">  <Link to="/edit" ><BsFillPersonFill/>Personal Information </Link></MenuItem>
                 <MenuItem className="mb-3 ml-5 ">  <Link to="/changepassword" > <MdSecurity/>Change Password </Link></MenuItem>
                 <MenuItem className="mb-3 ml-5 ">  <Link to="/logout" > <MeetingRoomIcon />Logout </Link></MenuItem>
-
             </Drawer>
         </div>
-       
     )
 
 }

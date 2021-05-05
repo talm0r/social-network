@@ -52,6 +52,18 @@ export default function notesReducer(state = [], action) {
                return item;
             })
         }
+        case "DELETENOTE":
+           
+            return {
+                ...state,
+                outbox: 
+            state.outbox.filter((item,index) => action.payload != item?.noteId)
+              
+            //    return item;
+              
+               
+            
+        }
         case "ADDEDNOTE":
          
             return {

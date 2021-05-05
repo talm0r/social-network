@@ -1,14 +1,13 @@
 import data from '../data/data';
-import { authHeader } from '../helpers/auth-header';
-import { history } from '../helpers/history';
-import { useSelector } from 'react-redux'
+
 import uploadFilesService from './upload-files.service';
 export const notesService = {
     getInbox,
     createNote,
     updateNote,
     setReadFlag,
-    getOutbox
+    getOutbox,
+    deleteNote
 
 };
 
@@ -85,9 +84,9 @@ async function createNote(values) {
     };
 
 
-    if ((typeof (values.note_image) === "object")) {
+    if ((typeof (values.image) === "object")) {
         try {
-            const response = await uploadFilesService.upload(values.note_image[0]);
+            const response = await uploadFilesService.upload(values.image[0]);
             const json = await response.json();
            
             requestOptions.body.noteIcon  = json.result.url;
@@ -102,7 +101,7 @@ async function createNote(values) {
          catch (error) {
              console.log(error);
          }
-        // uploadFilesService.upload(values.note_image[0]).then((response) => {
+        // uploadFilesService.upload(values.image[0]).then((response) => {
         //     if (response.data.status == 200) {
         //         console.log(requestOptions);
         //         requestOptions.body.noteIcon = response.data.result.url
@@ -141,13 +140,11 @@ async function updateNote(note) {
         }
 
     };
-    if ((typeof (note.note_image) === "object")) {
+    if ((typeof (note.image) === "object")) {
         try {
-           const response = await uploadFilesService.upload(note.note_image[0]);
-           const json = await response.json();
-           console.log(json);
-           requestOptions.body.noteIcon  = json.result.url;
-           requestOptions.body = JSON.stringify(requestOptions.body);
+            // await uploadFilesService.upload(user.image[0]).then(res => console.log(res));
+        //    requestOptions.body.noteIcon  = json.result.url;
+        //    requestOptions.body = JSON.stringify(requestOptions.body);
 
            return fetch(`${data.apiUrl}/notes/update`, requestOptions).then(handleResponse)
            .then(response => {
@@ -169,6 +166,19 @@ async function updateNote(note) {
                 return response;
             });
     }
+}
+function deleteNote(noteId) {
+   
+    console.log(noteId);
+    const requestOptions = {
+        method: 'DELETE',
+    };
+    return fetch(`${data.apiUrl}/notes/delete/`+noteId, requestOptions).then(handleResponse)
+    .then(response => {
+        // debugger;
+        console.log(response);
+        return response;
+    });
 }
 
 function handleResponse(response) {

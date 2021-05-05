@@ -11,16 +11,12 @@ export const userActions = {
     signUp,
     edit
 };
-// getOutbox,
-// getInbox,
-// setReadFlag,
-// updateNote,
-// addNote,
+
 function login(username, password) {
-   
+//    debugger;
     return dispatch => {
       
-        dispatch(request({ username }));
+        // dispatch(request({ username }));
 
         userService.login(username, password)
             .then(
@@ -32,37 +28,39 @@ function login(username, password) {
                        dispatch(notesActions.getOutbox());
                        dispatch(getAll());
                         dispatch(success(user));
-                       
+                        dispatch(alertActions.success(response.message));
                     }
                     else {
                         console.log(response.message);
-                        dispatch(failure(response.message));
+                        // dispatch(failure(response.message));
                         dispatch(alertActions.error(response.message));
                     }
                 },
                 error => {
-                    console.log("Error");
-                    dispatch(failure(error));
+                   
+                    // dispatch(failure(error));
                     dispatch(alertActions.error(error));
                 }
             );
     };
 
-    function request(user) { return { type: userConstants.LOGIN_REQUEST, user } }
+    // function request(user) { return { type: userConstants.LOGIN_REQUEST, user } }
     function success(user) { return { type: userConstants.LOGIN_SUCCESS, user } }
     function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
 }
 
 function signUp(values) {
+    debugger;
     return dispatch => {
        userService.signUp(values);
     };
 }
 function edit(user) {
-    // console.log(user);
     return dispatch => {
        userService.editUser(user);
-       dispatch({type:"UPDATEUSER",payload: user})
+        delete user.image
+     
+       dispatch({type:userConstants.UPDATE_USER,payload: user})
     };
 }
 
@@ -73,9 +71,6 @@ function logout() {
 
 function getAll() {
     return dispatch => {
-        dispatch(request());
-       
-
         userService.getAll()
             .then(
                 users => { 
@@ -83,15 +78,14 @@ function getAll() {
                     for(let i = 0; i<users.result.length; i++) {
                         users.result[i].id = i;
                     }
-                     dispatch({type:"GETALLUSERS",payload: users.result})},
+                     dispatch({type:userConstants.GETALL_USERS,payload: users.result})},
                 error => { 
                     dispatch(failure(error));
-                    dispatch(alertActions.error(error))
+                   
                 }
             );
     };
 
-    function request() { return { type: userConstants.GETALL_REQUEST } }
-    // function success(users) { return { type: userConstants.GETALL_SUCCESS, users } }
+   
     function failure(error) { return { type: userConstants.GETALL_FAILURE, error } }
 }

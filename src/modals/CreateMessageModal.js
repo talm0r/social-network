@@ -89,6 +89,7 @@ function CreateMessageModal({ note }) {
     const handleSubmit = () => {
         setLoading(true);
         if(note != undefined) {
+            console.log(values);
             values.noteId = note.noteId
             dispatch(notesActions.updateNote(values))
             setLoading(false);
@@ -106,7 +107,7 @@ function CreateMessageModal({ note }) {
     }
   
     const handleCallback = function (type, value) {
-      
+      console.log(type,value);
         if (type && value) {
             setValues({ ...values, [type]: value });
             if (type == 'note_color') {

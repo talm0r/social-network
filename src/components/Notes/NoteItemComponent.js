@@ -4,14 +4,20 @@ import Moment from "react-moment";
 import StarsComponent from "../Helpers/StarsComponent";
 import CreateMessageModal from "../../modals/CreateMessageModal";
 import { isMobile } from 'react-device-detect';
+import { notesActions } from "../../actions/notes.action";
+import { useDispatch } from "react-redux";
 function NoteItemComponent({ singleNote, inbox }) {
+    const dispatch = useDispatch();
+    const deleteNote = () => {
+        dispatch(notesActions.deleteNote(singleNote.noteId));
+    }
     return (
-        <tr key={singleNote.noteId}>
+        <tr key={singleNote?.noteId}>
             <td className="pl-0 py-8">
                 <div className="d-flex align-items-center">
                     <div className="symbol symbol-50 symbol-light mr-4 ">
                         <span className="symbol-label rounded-image px-9">
-                            <img src={inbox ? singleNote.userImage : singleNote.getterUserImage} className="h-100 rounded-image  " alt="" />
+                            <img src={inbox ? singleNote?.userImage : singleNote?.getterUserImage} className="h-100 rounded-image max-w-sm-50px " alt="" />
                         </span>
                     </div>
                     <div>
@@ -22,20 +28,20 @@ function NoteItemComponent({ singleNote, inbox }) {
                 </div>
             </td>
             <td>
-                {inbox ? (singleNote.userFirstName + " " + (singleNote.userLastName || '')) : (singleNote.getterFirstName + " " + (singleNote.getterLastName || ''))}
+                {inbox ? (singleNote?.userFirstName + " " + (singleNote?.userLastName || '')) : (singleNote?.getterFirstName + " " + (singleNote?.getterLastName || ''))}
             </td>
             <td>
                 <span className="text-dark-75 font-weight-bolder d-block font-size-lg">
-                    <Moment fromNow ago>{singleNote.noteCreated}</Moment> <span className="ml-1"> ago</span>
+                    <Moment fromNow ago>{singleNote?.noteCreated}</Moment> <span className="ml-1"> ago</span>
                 </span>
             </td>
             <td>
-                {isMobile ? <span> {singleNote.notePriority}</span> : <StarsComponent priority={singleNote.notePriority} isEditAble={false} />}
+                {isMobile ? <span> {singleNote?.notePriority}</span> : <StarsComponent priority={singleNote?.notePriority} isEditAble={false} />}
 
             </td>
             <td>
                 {
-                    singleNote.noteRead ? (
+                    singleNote?.noteRead ? (
                         <span className="label label-lg label-light-success label-inline">Read</span>
                     ) : (
                         <span className="label label-lg label-light-danger label-inline">Unread</span>
@@ -45,7 +51,7 @@ function NoteItemComponent({ singleNote, inbox }) {
             {inbox ?
               (  null)
                 : (<td>
-                    <span  className="btn btn-danger font-weight-bolder font-size-sm">Delete </span>
+                    <span onClick={deleteNote} className="btn btn-danger font-weight-bolder font-size-sm">Delete </span>
                  </td>)
             }
             

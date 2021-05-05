@@ -3,10 +3,7 @@ import { userConstants } from '../constants/user.constants';
 export default function userReducer(state = {}, action) {
    
     switch (action.type) {
-    case userConstants.GETALL_REQUEST:
-        return {
-        loading: true
-        };
+   
     case "GETALLUSERS":
       
         return {

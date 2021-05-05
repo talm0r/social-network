@@ -1,6 +1,6 @@
 import { alertConstants } from '../constants/alert.constants';
 
-export function alert(state = {}, action) {
+export default function alertReducer(state = {}, action) {
     switch (action.type) {
     case alertConstants.SUCCESS:
         return {
@@ -8,6 +8,7 @@ export function alert(state = {}, action) {
         message: action.message
         };
     case alertConstants.ERROR:
+      
         return {
         type: 'alert-danger',
         message: action.message

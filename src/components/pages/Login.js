@@ -7,6 +7,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
+
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -15,22 +16,22 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from "react-router-dom";
 import { userActions } from '../../actions/user.action';
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Tal Mor - React Social Network App
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+// function Copyright() {
+//   return (
+//     <Typography variant="body2" color="textSecondary" align="center">
+//       {'Copyright © '}
+//       <Link color="inherit" href="https://material-ui.com/">
+//         Tal Mor - React Social Network App
+//       </Link>{' '}
+//       {new Date().getFullYear()}
+//       {'.'}
+//     </Typography>
+//   );
+// }
 const md5 = require('md5');
 const useStyles = makeStyles(() => (
   
@@ -79,6 +80,11 @@ export default function Login(props) {
   const handleSigningState = () => {
     setSignInOrSignUp(!signInOrSignUp);
   }
+  const alerts = useSelector((state) => {
+    return state.alerts;
+})
+
+
   const LoginSchema = Yup.object().shape({
     userEmail: Yup.string()
       .email("Wrong email format")
@@ -113,6 +119,11 @@ export default function Login(props) {
       values.userPassword = md5(values.userPassword);
       if(signInOrSignUp) dispatch(userActions.signUp(values));
       else dispatch(userActions.login(values));
+      if(alerts.type == "alert-danger") {
+        
+        setErrorMessage(alerts.message);
+     
+      }
       disableLoading();
       setSubmitting(false);
 

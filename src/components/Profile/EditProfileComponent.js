@@ -21,9 +21,11 @@ function EditProfileComponent() {
 
 
     const handleCallback = function (type, value) {
-        return;
+        setUploadButton(true);
+        setValues({ ...values, [type]: value });
     }
     const [value, setValue] = useState('')
+    const [uploadButton, setUploadButton] = useState(false);
     const [loading, setLoading] = useState(false);
     const options = useMemo(() => countryList().getData(), [])
 
@@ -39,8 +41,11 @@ function EditProfileComponent() {
     });
 
     const saveProfile = () => {
+    //   debugger;
        dispatch(userActions.edit(values));
     }
+
+ 
   
 
     return (
@@ -76,6 +81,8 @@ function EditProfileComponent() {
                                 <div className="image-input image-input-outline" id="kt_profile_avatar" >
                                     <img className="max-w-100px" src={user.userImage} />
                                     <ImageUploaderComponent parentCallback={handleCallback} defaultImage={user.userImage} />
+                                  
+                                   
                                 </div>
                             </div>
                         </div>

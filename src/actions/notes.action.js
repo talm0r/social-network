@@ -12,6 +12,7 @@ export const notesActions = {
     setReadFlag,
     updateNote,
     addNote,
+    deleteNote
     
 };
 
@@ -82,6 +83,14 @@ function updateNote(note) {
                    dispatch(getInbox());
                 }
             })
+    }
+}
+function deleteNote(noteId) {
+    console.log(noteId);
+    return dispatch => {
+        notesService.deleteNote(noteId).then(response => {
+            dispatch({type:"DELETENOTE",payload: noteId});
+        })
     }
 }
 
