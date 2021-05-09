@@ -1,8 +1,6 @@
-import { useState, useMemo } from "react";
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import ImageUploaderComponent from "../Helpers/ImageUploaderComponent";
-import countryList from 'react-select-country-list'
 import { userActions } from "../../actions/user.action";
 
 function EditProfileComponent() {
@@ -12,41 +10,28 @@ function EditProfileComponent() {
         setValues({ ...values, [name]: event.target.value });
     };
     const dispatch = useDispatch();
-
-
     const user = useSelector((state) => {
-
         return state.auth.user;
     })
 
 
     const handleCallback = function (type, value) {
-        setUploadButton(true);
         setValues({ ...values, [type]: value });
     }
-    const [value, setValue] = useState('')
-    const [uploadButton, setUploadButton] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const options = useMemo(() => countryList().getData(), [])
-
+   
     const [values, setValues] = React.useState({
-        userId: user.userId,
-        userFirstName: user.userFirstName,
-        userLastName: user.userLastName,
-        userImage: user.userImage,
-        userEmail: user.userEmail,
-        userRole: user.userRole,
-        userPhone: user.userPhone,
-        userLocation: user.userLocation,
+        userId: user.userId ? user.userId : '',
+        userFirstName: user.userFirstName ? user.userFirstName : '',
+        userLastName: user.userLastName ? user.userLastName : '',
+        userImage: user.userImage ? user.userImage : '',
+        userEmail: user.userEmail ? user.userEmail : '',
+        userRole: user.userRole ? user.userRole : '',
+        userPhone: user.userPhone ? user.userPhone : '',
+        userLocation: user.userLocation ? user.userLocation : '',
     });
-
     const saveProfile = () => {
-    //   debugger;
        dispatch(userActions.edit(values));
     }
-
- 
-  
 
     return (
 
@@ -79,7 +64,7 @@ function EditProfileComponent() {
                             <label className="col-xl-3 col-lg-3 col-form-label">Avatar</label>
                             <div className="col-lg-9 col-xl-6">
                                 <div className="image-input image-input-outline" id="kt_profile_avatar" >
-                                    <img className="max-w-100px" src={user.userImage} />
+                                    <img alt="" className="max-w-100px" src={user.userImage} />
                                     <ImageUploaderComponent parentCallback={handleCallback} defaultImage={user.userImage} />
                                   
                                    

@@ -1,19 +1,12 @@
 import { Button, Modal } from "react-bootstrap";
 import { useState } from "react";
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Moment from "react-moment";
-import { useSelector, useDispatch } from 'react-redux'
+import {  useDispatch } from 'react-redux'
 import { notesActions } from "../actions/notes.action";
 function ShowMessageModal({ note }) {
-
   const dispatch = useDispatch();
-  const useStyles = makeStyles((theme) => ({
-
-  }));
-
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => { 
     setShow(true) 
@@ -25,16 +18,11 @@ function ShowMessageModal({ note }) {
   }
   const placeHolder = note.noteTitle
 
-  
-
- 
   return (
     <>
       <span onClick={handleShow}>
         {placeHolder}
       </span>
-
-
       <Modal show={show} onHide={handleClose}>
         <Modal.Header style={{ backgroundColor: note.noteColor }} closeButton>
           <Modal.Title className="text-capitalize">Inbox</Modal.Title>
@@ -50,37 +38,27 @@ function ShowMessageModal({ note }) {
                   </span>
                 </div>
                 <div>
-                  <a className="text-capitalize text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">{note.userFirstName + " " + note.userLastName}</a>
+                  <span className="text-capitalize text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">{note.userFirstName + " " + note.userLastName}</span>
                   <span className="text-capitalize text-muted font-weight-bold d-block">{note.userRole}</span>
                 </div>
-
               </div>
             </div>
-
             <div>
-              <a className="text-capitalize text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">Location</a>
+              <span className="text-capitalize text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">Location</span>
               <span className="text-capitalize text-muted font-weight-bold d-block">{note.userLocation}</span>
             </div>
             <div>
-              <a className="text-capitalize text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">Phone</a>
+              <span className="text-capitalize text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">Phone</span>
               <span className="text-capitalize text-muted font-weight-bold d-block">{note.userPhone}</span>
             </div>
-
-
             <div className="pr-0 text-right">
-              <a className="btn btn-light-success font-weight-bolder font-size-sm">Message back!</a>
+              <span className="btn btn-light-success font-weight-bolder font-size-sm">Message back!</span>
             </div>
           </div>
-          {/* <div class="card card-custom card-stretch gutter-b">
-                                {note.noteBody}
-                                </div> */}
           <div className="card card-custom gutter-b">
             <div className="card-header ">
               <div className="card-title ">
-                <h3 className="card-label text-capitalize">
-                  {note.noteTitle}
-
-                </h3>
+                <h3 className="card-label text-capitalize"> {note.noteTitle} </h3>
               
               </div>
               <div className="card-title ">
@@ -89,9 +67,7 @@ function ShowMessageModal({ note }) {
              
             </div>
             <div className="card-body ">
-              <div className="font-size-h3 mb-5"> 
-              {note.noteBody}
-              </div>
+              <div className="font-size-h3 mb-5"> {note.noteBody} </div>
              
               <div className="text-center">
               <img src={note.noteIcon} className="max-w-100px  " alt="" />

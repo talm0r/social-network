@@ -1,5 +1,5 @@
-import { Button,  Modal,  } from "react-bootstrap";
-import { useState , useEffect} from "react";
+import { Button, Modal, } from "react-bootstrap";
+import { useState, useEffect } from "react";
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -8,7 +8,6 @@ import ColorPickerComponent from "../components/Helpers/ColorPickerComponent";
 import ImageUploaderComponent from "../components/Helpers/ImageUploaderComponent";
 import { ReactSearchAutocomplete } from 'react-search-autocomplete'
 import { useSelector, useDispatch } from 'react-redux'
-import { notesService } from "../services/notes.service";
 import { notesActions } from "../actions/notes.action";
 import { userActions } from "../actions/user.action";
 
@@ -36,60 +35,82 @@ function CreateMessageModal({ note }) {
     const [showImageUploader, setShowImageUploader] = useState(note);
     const [headerColor, setheaderColor] = useState(note?.noteColor);
     const [userToMessage, setUserToMessage] = useState();
+    const [errorMessage, setErrorMessage] = useState();
 
 
 
-    const handleOnSearch = (string, results) => {
-    }
+
     const allUsers = useSelector((state) => {
-
         return state.user.allUsers;
     })
 
-    const user =  useSelector( (state) => {
-    
+    const user = useSelector((state) => {
         return state.auth.user;
-    } ) 
+    })
     const handleOnSelect = (item) => {
+        
+        setValues({ ...values, "userId":item.userId});
         setUserToMessage(item);
     }
-   
+
     const cancelUserSelect = () => {
         setUserToMessage(null);
     }
-   
+
     useEffect(() => {
-        if(allUsers  == undefined) {
-          
+        if (allUsers === undefined) {
             dispatch(userActions.getAll());
         }
-      
-        },[]);
-   
+    }, []);
+
     const classes = useStyles();
     const dispatch = useDispatch();
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const handleShowImageUploader = () => setShowImageUploader(!showImageUploader);
-   
+
     const [values, setValues] = React.useState({
-        noteTitle: note?.noteTitle,
-        noteBody: note?.noteBody,
-        note_priority: note?.notePriority,
+        noteTitle: note?.noteTitle ? note.noteTitle : '',
+        noteBody: note?.noteBody ? note.noteBody : '',
+        note_priority: note?.notePriority ,
         note_color: note?.noteColor,
         noteIcon: note?.noteIcon,
         noteSenderId: '',
-        noteUserId:'',
+        userId: note?.noteUserId ? note.noteUserId : '',
     });
-   
+
     const handleChange = name => event => {
+        
         setValues({ ...values, [name]: event.target.value });
     };
-   
+
     const handleSubmit = () => {
+       
+        if (values.userId === '') {
+            setErrorMessage("Select user to message");
+            return;
+        }
+        if (values.noteTitle?.length < 3) {
+            setErrorMessage("Note title has to be atleast 3 characters long");
+            return;
+        }
+        if (values.noteBody.length < 5) {
+            setErrorMessage("Note body has to be atleast 5 characters long");
+            return;
+        }
+        if (values.note_priority == undefined) {
+            setErrorMessage("Please choose priority");
+            return;
+        }
+
+        if (values.note_color == undefined) {
+            setErrorMessage("Choose color");
+            return;
+        }
+  
+
         setLoading(true);
-        if(note != undefined) {
-            console.log(values);
+        if (note !== undefined) {
             values.noteId = note.noteId
             dispatch(notesActions.updateNote(values))
             setLoading(false);
@@ -103,33 +124,31 @@ function CreateMessageModal({ note }) {
             setLoading(false);
             setShow(false);
         }, 1000);
-       
+
     }
-  
+
     const handleCallback = function (type, value) {
-      console.log(type,value);
         if (type && value) {
             setValues({ ...values, [type]: value });
-            if (type == 'note_color') {
+            if (type === 'note_color') {
                 setheaderColor(value);
             }
-     
         }
         return;
     }
     return (
         <>
             <span onClick={handleShow}>
+
                 <h5>{note ? note.noteTitle : "Send Message"} </h5>
             </span>
 
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header style={{ backgroundColor: headerColor }} closeButton>
-                    <Modal.Title>{note ? <span> Edit Message sent to {(note.getterFirstName || '') +" " + (note.getterLastName || '' )}  </span>: "Send Message"} {userToMessage ? (<span> To {userToMessage.userFirstName} {userToMessage.userLastName}</span>) : null}</Modal.Title>
+                    <Modal.Title>{note ? <span> Edit Message sent to {(note.getterFirstName || '') + " " + (note.getterLastName || '')}  </span> : "Send Message"} {userToMessage ? (<span> To {userToMessage.userFirstName} {userToMessage.userLastName}</span>) : null}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {/* <IconsComponent /> */}
 
                     <form className={classes.container} noValidate autoComplete="off">
                         <div className="w-100">
@@ -138,22 +157,21 @@ function CreateMessageModal({ note }) {
                                     <div className="w-100 mb-5" >
                                         <h4>Search user by email\name</h4>
                                     </div>
-                                    ) 
+                                )
                                     : ''
-                                }
-                            {note ? null :  
-                             <ReactSearchAutocomplete
-                                items={allUsers}
-                                onSearch={handleOnSearch}
-                                fuseOptions={{ keys: ["userEmail", "userFirstName", "userLastName"] }}
-                                resultStringKeyName="userEmail"
-                                onSelect={handleOnSelect}
-                                
-                                maxResults={6}
-                                styling={{ zIndex: '100' }}
-                                autoFocus
-                            />}
-                        
+                            }
+                            {note ? null :
+                                <ReactSearchAutocomplete
+                                    items={allUsers}
+                                    fuseOptions={{ keys: ["userEmail", "userFirstName", "userLastName"] }}
+                                    resultStringKeyName="userEmail"
+                                    onSelect={handleOnSelect}
+
+                                    maxResults={6}
+                                    styling={{ zIndex: '100' }}
+                                    autoFocus
+                                />}
+
                         </div>
                         {
                             userToMessage ? (
@@ -173,10 +191,10 @@ function CreateMessageModal({ note }) {
                                         <div>
                                             <span className="font-weight-bolder font-size-h5 text-dark-75 text-hover-primary">Phone Number</span>
                                             <div className="text-muted text-capitalize">{userToMessage.userPhone}</div>
-                                            
+
                                         </div>
                                         <div className="pr-0 text-right">
-                                            <a onClick={cancelUserSelect} className="btn btn-light-danger font-weight-bolder font-size-sm">Cancel</a>
+                                            <span onClick={cancelUserSelect} className="btn btn-light-danger font-weight-bolder font-size-sm">Cancel</span>
                                         </div>
                                     </div>
                                 </div>
@@ -190,6 +208,7 @@ function CreateMessageModal({ note }) {
                             onChange={handleChange('noteTitle')}
                             margin="normal"
                             variant="outlined"
+                            required={true}
                         />
                         <TextField
                             id="outlined-multiline-static"
@@ -201,6 +220,7 @@ function CreateMessageModal({ note }) {
                             onChange={handleChange('noteBody')}
                             margin="normal"
                             variant="outlined"
+                            required={true}
                         />
                         <div className="row col-sm-12 text-center flex-center ">
                             <label className="col-sm-12"><h5>Priority</h5></label>
@@ -212,21 +232,21 @@ function CreateMessageModal({ note }) {
                             <ColorPickerComponent parentCallback={handleCallback} />
                         </div>
                         <div className="row col-sm-12 mt-5 text-center flex-center mt-5">
-                        <img src={note?.noteIcon} className="max-w-100px  " alt="" />
+                            <img src={note?.noteIcon} className="max-w-100px  " alt="" />
                         </div>
 
                         <div className="row col-sm-12 mt-5 text-center flex-center mt-5">
                             <label className="col-sm-12">
                                 <h5>
-                                {note ? 
-                                <span onClick={handleShowImageUploader}> Change Image? </span>: 
-                                'Add Image' }
+                                    {note ?
+                                        <span onClick={handleShowImageUploader}> Change Image? </span> :
+                                        'Add Image'}
                                 </h5>
-                                </label>
-                                {showImageUploader ?  '' :   <ImageUploaderComponent parentCallback={handleCallback} />}
-                          
+                            </label>
+                            {showImageUploader ? '' : <ImageUploaderComponent parentCallback={handleCallback} />}
+
                         </div>
-                        
+                        <h3>{errorMessage ? errorMessage : ''}</h3>
 
                     </form>
                 </Modal.Body>
@@ -234,9 +254,9 @@ function CreateMessageModal({ note }) {
                     <Button className="btn btn-secondary font-weight-bold px-9 py-4 my-3" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button  onClick={handleSubmit} className="btn btn-primary font-weight-bold px-9 py-4 my-3">
-                       {note ? 'Save Changes ' : 'Send Message '} 
-                       {loading && <span className="ml-3 spinner spinner-white"></span>}
+                    <Button onClick={handleSubmit} className="btn btn-primary font-weight-bold px-9 py-4 my-3">
+                        {note ? 'Save Changes ' : 'Send Message '}
+                        {loading && <span className="ml-3 spinner spinner-white"></span>}
                     </Button>
                 </Modal.Footer>
             </Modal>

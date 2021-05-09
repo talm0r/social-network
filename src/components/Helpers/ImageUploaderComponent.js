@@ -8,7 +8,6 @@ function ImageUploaderComponent ({parentCallback})  {
   
   return (
     <ImageUploader
-     
       withIcon={true}
       onChange={onDrop}
       imgExtension={[".jpg", ".gif", ".png", ".gif", ".jpeg"]}
@@ -16,8 +15,6 @@ function ImageUploaderComponent ({parentCallback})  {
       singleImage={true}
       withPreview={true}
       buttonText={'Choose image'}
-      // withIcon={false}
-    
     />
   );
 };

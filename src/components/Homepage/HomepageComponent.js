@@ -1,7 +1,7 @@
 import ProfileComponent from "../Profile/ProfileComponent";
 import NotesTableComponent from "../Notes/NotesTableComponent";
 import EditProfileComponent from "../Profile/EditProfileComponent";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {  Route, Switch } from "react-router-dom";
 import ChangePasswordComponent from "../Profile/ChangePasswordComponent";
 import  HeaderComponent  from "../Header/HeaderComponent";
 import NotesOutboxComponent from "../Notes/NotesOutboxComponent";

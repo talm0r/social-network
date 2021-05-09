@@ -8,7 +8,6 @@ export const notesService = {
     setReadFlag,
     getOutbox,
     deleteNote
-
 };
 
 function setReadFlag(noteId,status) {
@@ -87,40 +86,26 @@ async function createNote(values) {
     if ((typeof (values.image) === "object")) {
         try {
             const response = await uploadFilesService.upload(values.image[0]);
-            const json = await response.json();
            
-            requestOptions.body.noteIcon  = json.result.url;
+           
+            requestOptions.body.noteIcon  = response.result.url;
             requestOptions.body = JSON.stringify(requestOptions.body);
  
             return fetch(`${data.apiUrl}/notes/add`, requestOptions).then(handleResponse)
             .then(response => {
-                console.log(response);
                 return response;
             });
          }
          catch (error) {
              console.log(error);
          }
-        // uploadFilesService.upload(values.image[0]).then((response) => {
-        //     if (response.data.status == 200) {
-        //         console.log(requestOptions);
-        //         requestOptions.body.noteIcon = response.data.result.url
-        //         requestOptions.body = JSON.stringify(requestOptions.body);
-        //         return fetch(`${data.apiUrl}/notes/add`, requestOptions).then(handleResponse)
-        //             .then(response => {
-        //                 console.log(response);
-        //                 return response;
-        //             });
-
-        //     }
-        // })
+     
     }
       
     else {
         requestOptions.body = JSON.stringify(requestOptions.body);
         return fetch(`${data.apiUrl}/notes/add`, requestOptions).then(handleResponse)
             .then(response => {
-                console.log(response);
                 return response;
             });
     }
@@ -142,70 +127,38 @@ async function updateNote(note) {
     };
     if ((typeof (note.image) === "object")) {
         try {
-            // await uploadFilesService.upload(user.image[0]).then(res => console.log(res));
-        //    requestOptions.body.noteIcon  = json.result.url;
-        //    requestOptions.body = JSON.stringify(requestOptions.body);
-
+            const response = await uploadFilesService.upload(note.image[0]);
+            requestOptions.body.noteIcon  = response.result.url;
+            requestOptions.body = JSON.stringify(requestOptions.body);
            return fetch(`${data.apiUrl}/notes/update`, requestOptions).then(handleResponse)
-           .then(response => {
-
-               console.log(response);
-               return response;
-           });
         }
         catch (error) {
             console.log(error);
         }
     }
     else {
-        requestOptions.body = JSON.stringify(requestOptions.body);
-        return fetch(`${data.apiUrl}/notes/update`, requestOptions).then(handleResponse)
-            .then(response => {
-                // debugger;
-                console.log(response);
-                return response;
-            });
+        try {
+            requestOptions.body = JSON.stringify(requestOptions.body);
+            return fetch(`${data.apiUrl}/notes/update`, requestOptions).then(handleResponse)
+        }
+        catch (error) {
+            console.log(error);
+        }
+      
     }
 }
 function deleteNote(noteId) {
-   
-    console.log(noteId);
     const requestOptions = {
         method: 'DELETE',
     };
     return fetch(`${data.apiUrl}/notes/delete/`+noteId, requestOptions).then(handleResponse)
-    .then(response => {
-        // debugger;
-        console.log(response);
-        return response;
-    });
 }
+
 
 function handleResponse(response) {
-    return response.text().then(text => {
-        const data = text && JSON.parse(text);
-        if (!response.ok) {
-            if (response.status === 401) {
-                // auto logout if 401 response returned from api
-                // logout();
-                // location.reload(true);
-            }
-
-            const error = (data && data.message) || response.statusText;
-            return Promise.reject(error);
-        }
-
-        return data;
-    });
-}
- function uploadImage(image) {
-    uploadFilesService.upload(image).then((response) => {
-        if (response.data.status == 200) {
-
-            return response.data.result.url;
-
-
-
-        }
-    })
-}
+    return response.json() 
+    .then(response => {
+      return response;
+  });
+  }
+  

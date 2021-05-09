@@ -9,12 +9,13 @@ import Avatar from '@material-ui/core/Avatar';
 import { Drawer, MenuItem } from '@material-ui/core';
 import { useState } from 'react';
 import { Link } from "react-router-dom";
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import { FaInbox , FaFacebookMessenger } from 'react-icons/fa';
 import { BsFillPersonFill } from "react-icons/bs";
 
 import { MdSecurity } from "react-icons/md";
+import { userActions } from '../../actions/user.action';
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -29,13 +30,22 @@ const useStyles = makeStyles((theme) => ({
     title: {
         flexGrow: 1,
     },
+    span: {
+        color:"#3699FF",
+    },
+    logoutButton: {
+        color:"#3699FF",
+    }
 
 }));
 function HeaderComponent() {
+    const dispatch = useDispatch();
     const user = useSelector((state) => {
-
         return state.auth.user;
     })
+    const logout = () => {
+        dispatch(userActions.logout());
+    }
     const [menu, setMenu] = useState(false)
    
     function handleToggle() {
@@ -60,11 +70,10 @@ function HeaderComponent() {
                 <MenuItem className="mb-3 ml-5 "><Link to="/outbox" ><FaInbox />Outbox </Link></MenuItem>
                 <MenuItem className="mb-3 ml-5 ">  <Link to="/edit" ><BsFillPersonFill/>Personal Information </Link></MenuItem>
                 <MenuItem className="mb-3 ml-5 ">  <Link to="/changepassword" > <MdSecurity/>Change Password </Link></MenuItem>
-                <MenuItem className="mb-3 ml-5 ">  <Link to="/logout" > <MeetingRoomIcon />Logout </Link></MenuItem>
+                <MenuItem className="mb-3 ml-5 ">  <span className={classes.logoutButton}  onClick={logout} > <MeetingRoomIcon />Logout </span></MenuItem>
             </Drawer>
         </div>
     )
-
 }
 
 export default HeaderComponent;

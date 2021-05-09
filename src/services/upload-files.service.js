@@ -11,9 +11,7 @@ class UploadFilesService {
       body:formData
   };
     return fetch("http://localhost:8080/upload/upload", requestOptions).then(res => res.json()).then(json => json);
-    // const response = await uploadFilesService.upload(image);
-    // const json = await response.json();
-    // return json;
+   
   }
 
   getFiles() {

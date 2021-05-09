@@ -80255,8 +80255,15 @@ body {
   transition: all 0.15s ease;
     color: #3699FF;
 }
+.login-register-button {
+  cursor: pointer;
+  }
 .header {
   background-color: white;
 }
+.logoutButton {
+  cursor: pointer;
+}
+
 
 /*# sourceMappingURL=style.bundle.css.map*/

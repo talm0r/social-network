@@ -9,33 +9,47 @@ export const userService = {
     logout,
     getAll,
     editUser,
-    uploadImage
 };
 
+/**
+ * do login and save on localstorage for later use(get inbox\outbox with token)
+ * @param {*} loginDto 
+ * @returns user data
+ */
 function login(loginDto) {
-
     const requestOptions = createRequestOptions("POST", requestHeaders.CONTENT_JSON, loginDto)
     return fetch(`${data.apiUrl}/user/login`, requestOptions)
         .then(handleResponse)
         .then(response => {
-            if (response.status == 200) {
+            if (response.status === 200) {
                 localStorage.setItem('user', JSON.stringify(response.result));
             }
-
             return response;
         });
 }
 
+/**
+ * do signup, then save on localstorage for later use(get inbox\outbox with token)
+ * @param {*} signUpDto 
+ * @returns user data
+ */
 function signUp(signUpDto) {
     const requestOptions = createRequestOptions("POST", requestHeaders.CONTENT_JSON, signUpDto)
 
     return fetch(`${data.apiUrl}/user/signup`, requestOptions)
         .then(handleResponse)
         .then(response => {
-            localStorage.setItem('user', JSON.stringify(response.result));
+            if(response.status === 200) {
+                localStorage.setItem('user', JSON.stringify(response.result));
+            }
             return response;
         });
 }
+/**
+ * Gets user object, check if user changed image, if so - upload image and update, if not just update details
+ * @param {*} user 
+ * @returns updated user
+ */
 async function editUser(user) {
     delete user.userImage;
     const requestOptions = createRequestOptions("PUT", requestHeaders.CONTENT_JSON, user)
@@ -46,28 +60,23 @@ async function editUser(user) {
                 console.log(res.result.url);
                 user.userImage = res.result.url;
                 const requestOptions = createRequestOptions("PUT", requestHeaders.CONTENT_JSON, user)
-                
-                return fetchToServer(requestOptions);
-                
-           
+                return userUpdateFetchToServer(requestOptions);
             });
     }
     else {
-        return fetchToServer(requestOptions);
-      
+        return userUpdateFetchToServer(requestOptions);
     }
     return;
-
-
 }
-
-function fetchToServer(requestOptions) {
+/**
+ * Gets request options and fetching to server to update user data
+ * @param {*} requestOptions 
+ * @returns server response
+ */
+function userUpdateFetchToServer(requestOptions) {
     return fetch(`${data.apiUrl}/user/update`, requestOptions)
     .then(handleResponse)
-    .then(response => {
-        console.log(response);
-        return response;
-    });
+   
 }
 
 function logout() {
@@ -80,27 +89,14 @@ function getAll() {
         method: 'GET',
         headers: authHeader()
     };
-    return fetch(`${data.apiUrl}/user/getAllUsers`, requestOptions).then(handleResponse).then(response => {
-        return response;
-    });
+    return fetch(`${data.apiUrl}/user/getAllUsers`, requestOptions).then(handleResponse)
 }
 
 function handleResponse(response) {
-    return response.text().then(text => {
-        const data = text && JSON.parse(text);
-        if (!response.ok) {
-            if (response.status === 401) {
-                // auto logout if 401 response returned from api
-                logout();
-                // location.reload(true);
-            }
-
-            const error = (data && data.message) || response.statusText;
-            return Promise.reject(error);
-        }
-
-        return data;
-    });
+  return response.json() 
+  .then(response => {
+    return response;
+});
 }
 
 function createRequestOptions(method, headers, body) {
@@ -113,9 +109,3 @@ function createRequestOptions(method, headers, body) {
     return requestOptions;
 }
 
-async function uploadImage(image) {
-    // debugger;
-    const response = await uploadFilesService.upload(image);
-    const json = await response.json();
-    return json;
-}

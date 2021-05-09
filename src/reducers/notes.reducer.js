@@ -41,7 +41,7 @@ export default function notesReducer(state = [], action) {
                 ...state,
                 notes: 
             state.notes.map((item,index) => {
-               if(action.payload.noteId == item.noteId) {
+               if(action.payload.noteId === item.noteId) {
                   return {
                       ...item,
                       noteRead: true
@@ -57,7 +57,7 @@ export default function notesReducer(state = [], action) {
             return {
                 ...state,
                 outbox: 
-            state.outbox.filter((item,index) => action.payload != item?.noteId)
+            state.outbox.filter((item,index) => action.payload !== item?.noteId)
               
             //    return item;
               

@@ -4,10 +4,7 @@ import CreateMessageModal from "../../modals/CreateMessageModal";
 import NoteItemComponent from "./NoteItemComponent";
 import { useSelector, useDispatch } from 'react-redux'
 import { userActions } from '../../actions/user.action';
-// import { authentication } from "../../reducers/authentication.reducer";
 import { notesActions } from "../../actions/notes.action";
-// import { notesConstants } from "../../constants/note.constants";
-import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -16,27 +13,13 @@ import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-
-
 import { TableHead } from "@material-ui/core";
 import TablePaginationActions from "@material-ui/core/TablePagination/TablePaginationActions";
 
-const useStyles1 = makeStyles((theme) => ({
-    root: {
-        flexShrink: 0,
-        marginLeft: theme.spacing(2.5),
-    },
-}));
-const useStyles2 = makeStyles({
-    table: {
-        minWidth: 500,
-    },
-});
+
 
 
 function NotesTableComponent(props) {
-   
-   
     const dispatch = useDispatch();
     const notes = useSelector((state) => {
         return state.notes.notes;
@@ -44,14 +27,13 @@ function NotesTableComponent(props) {
     const outbox = useSelector((state) => {
         return state.notes.outbox;
     })
+    // Reversing array for display new to old
     const newArray = notes?.slice().reverse();
-    // const user = useSelector((state) => {
-    //     return state.auth.user;
-    // })
+ 
     const allUsers = useSelector((state) => {
         return state.user.allUsers;
     })
-    const test = () => {
+    const logout = () => {
         dispatch(userActions.logout());
     }
     useEffect(() => {
@@ -88,7 +70,7 @@ function NotesTableComponent(props) {
                         </h3>
                         <div className="card-toolbar">
                             <span className="btn btn-info font-weight-bolder font-size-sm mr-3"><CreateMessageModal /></span>
-                            <span onClick={test} className="btn btn-warning font-weight-bolder font-size-sm">Logout</span>
+                            <span onClick={logout} className="btn btn-warning font-weight-bolder font-size-sm">Logout</span>
                         </div>
                     </div>
                 </div>
